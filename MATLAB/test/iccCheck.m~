@@ -38,11 +38,12 @@ clc, clear, close all
     
 n = 5000;
 for i = 1:size(Gd,2)
+%     data(i,:) = [normrnd(0,0.2,n,1); trnd(3,n,1); chi2rnd(4,n,1)]'; 
 %       data(i,:) = [normrnd(0,0.075,n,1);]';
-%     data(i,:) = [exprnd(1,n,1); normrnd(1,0.05,n,1)]';
+%     data(i,:) = [exprnd(1,n,1);normrnd(1,0.05,n,1)]';
 %     data(i,:) = [unifrnd(0.04,0.05,n,1); normrnd(0,0.04,n,1)]';
-    data(i,:) = [gamrnd(9,0.5,[n,1]); unifrnd(0.04,10,n,1);];
-%     data(i,:) = [gamrnd(8,0.5,[n,1]); exprnd(1,n,1);];
+%     data(i,:) = [gamrnd(9,0.5,[n,1]); unifrnd(0.04,10,n,1);];
+    data(i,:) = [gamrnd(9,0.5,[n,1]); exprnd(1,n,1);];
 %     data = repmat(data,size(Gd,2));
 [bb(i,:),~,~,~] =kde(data,n,min(data(i,:)),max(data(i,:)));
 end

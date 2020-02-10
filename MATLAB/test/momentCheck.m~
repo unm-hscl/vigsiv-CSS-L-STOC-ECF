@@ -37,8 +37,7 @@ clc, clear, close all
     
 n = 1000;
 for i = 1:size(Gd,2)
-      data(i,:) = [normrnd(1,0.075,n,1);]';
-%       data(i,:) = [exprnd(1,n,1);];
+      data(i,:) = [normrnd(0,0.075,n,1);]';
 %     data(i,:) = [exprnd(1,n,1); normrnd(1,0.05,n,1)]';
 %     data(i,:) = [unifrnd(0.04,0.05,n,1); normrnd(0,0.04,n,1)]';
 %     data(i,:) = [gamrnd(9,0.5,[n,1]); unifrnd(0.04,10,n,1);];
@@ -49,7 +48,7 @@ end
 
 %% Generate Moments for the Quadratic Cost: 
 
-Q = 1*eye(size(Gd,2));
+Q = 10*eye(size(Gd,2));
 D = chol(Q);
 
 trans_data = D*Gd*data;
@@ -57,26 +56,26 @@ trans_data = D*Gd*data;
 disp('Computing Moments')
 tic
 % D'*E[DGW] -- mean
-m = D'*diracMixtureCostmean(data); 
+m = D'*diracMixtureCostmean(trans_data); 
 % E[W'G'D'*DGW]
-m2 = diracMixtureCostcov(data,bb);
+m2 = diracMixtureCostcov(data,Gd,D);
 var = m2 - m.^2;
 toc
 
-function m = diracMixtureCostmean(data)
+function mean = diracMixtureCostmean(data)
 
 	t = 0;
 
-    m = (1i)^(-1)*1/(size(data,2))*sum(1i*data,2);
-
+    cf_int = (1i)^(-1)*1/(size(data,2))*sum(1i*data.*exp(1i *  t * data),2);
+    cf = cf_int; 
 
 end
 
-function m2 = diracMixtureCostcov(data,sigma)
+function cf = diracMixtureCostcov(data,Gd,D)
 
 	t = 0;
 
-    m2 = (1i)^(-2)*1/(size(data,2))*...
-        sum(sigma.^2+(1i*data).^2,2);
+    cf_int = (1i)^(-2)*1/(size(data,2))*sum((1i)^2.*D.^2*Gd.^2*data.^2.*exp(1i *  t .* D * Gd * data),2);
+    cf = cf_int; 
 
 end

@@ -28,11 +28,10 @@ function [pu_m,pu_c,a] = piecewiseUnder(x,cdf,usererror,pieces)
         % Remove those slopes and intercepts which have negative error: 
         
         poserror = all(error >= 0,1);
-        tolerror = all(abs(error)<=usererror,1);
         maxerror = max(abs(error))<=usererror;
-        totmet = poserror+tolerror+maxerror;
+        totmet = poserror+maxerror;
         
-        metric = find(totmet==3);
+        metric = find(totmet==2);
 %         hold on, plot(xeval(metric(1),:),yeval(metric(1),:)'-y(:,metric(1)))
         
         if length(metric) == 1 || isempty(metric) == 1 ||  length(pu_m) >= pieces
