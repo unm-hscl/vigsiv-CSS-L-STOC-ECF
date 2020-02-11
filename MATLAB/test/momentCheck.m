@@ -44,7 +44,7 @@ for i = 1:size(Gd,2)
 %     data(i,:) = [gamrnd(9,0.5,[n,1]); unifrnd(0.04,10,n,1);];
 %     data(i,:) = [gamrnd(8,0.5,[n,1]); exprnd(1,n,1);];
 %     data = repmat(data,size(Gd,2));
-[bb(i,:),~,~,~] =kde(data,n,min(data(i,:)),max(data(i,:)));
+[sigma(i,:),~,~,~] =kde(data,n,min(data(i,:)),max(data(i,:)));
 end
 
 %% Generate Moments for the Quadratic Cost: 
@@ -59,7 +59,7 @@ tic
 % D'*E[DGW] -- mean
 m = D'*diracMixtureCostmean(data); 
 % E[W'G'D'*DGW]
-m2 = diracMixtureCostcov(data,bb);
+m2 = diracMixtureCostcov(data,sigma);
 var = m2 - m.^2;
 toc
 
@@ -77,6 +77,6 @@ function m2 = diracMixtureCostcov(data,sigma)
 	t = 0;
 
     m2 = (1i)^(-2)*1/(size(data,2))*...
-        sum(sigma.^2+(1i*data).^2,2);
+        sum(-sigma.^2+(1i*data).^2,2);
 
 end
