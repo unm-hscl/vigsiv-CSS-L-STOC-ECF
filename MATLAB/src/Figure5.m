@@ -46,25 +46,25 @@ plot_linewidth = 2;
     
 % Generate data vector: 
     
-n = 2000;
+n = 1000;
 for i = 1:size(prob.Gd(:,1:dim:end),2)
 %     data(2*i-1:2*i,:) = [normrnd(0,1,n,1)';normrnd(0,0.075,n,1)';];
 %       data(i,:) = [exprnd(1,n,1);];
 %     data(2*i-1:2*i,:) = [exprnd(2,n,1)'; normrnd(1,0.05,n,1)'];
-    data(2*i-1:2*i,:) = [gamrnd(8,0.5,[n,1])'; unifrnd(-0.005,0.005,n,1)'];
-%     data(2*i-1:2*i,:) = [unifrnd(-5,5,n,1)';0.005*gamrnd(8,0.5,[n,1])'; ];
+%     data(2*i-1:2*i,:) = [gamrnd(0.5,1,[n,1])'; unifrnd(-0.05,0.05,n,1)'];
+    data(2*i-1:2*i,:) = [unifrnd(-5,5,n,1)';0.005*gamrnd(8,0.5,[n,1])'; ];
 %     data(i,:) = [gamrnd(9,0.5,[n,1]); unifrnd(0,10,n,1);];
 %     data(i,:) = [gamrnd(8,0.5,[n,1]); exprnd(1,n,1);];
 %     data = repmat(data,size(Gd,2));
 end
 
-prob.N = 50;
+prob.N = 5;
 for i = 1:size(prob.Gd(:,1:dim:end),2)
 %     data(2*i-1:2*i,:) = [normrnd(0,1,n,1)';normrnd(0,0.075,n,1)';];
 %       data(i,:) = [exprnd(1,n,1);];
 %     data(2*i-1:2*i,:) = [exprnd(2,n,1)'; normrnd(1,0.05,n,1)'];
-    prob.realizations(2*i-1:2*i,:) = [gamrnd(8,0.5,[prob.N,1])'; unifrnd(-0.005,0.005,prob.N,1)'];
-%     data(2*i-1:2*i,:) = [unifrnd(-5,5,n,1)';0.005*gamrnd(8,0.5,[n,1])'; ];
+%     prob.realizations(2*i-1:2*i,:) = [gamrnd(0.5,1,[prob.N,1])'; unifrnd(-0.05,0.05,prob.N,1)'];
+    prob.realizations(2*i-1:2*i,:) = [unifrnd(-5,5,prob.N,1)';0.005*gamrnd(8,0.5,[prob.N,1])'; ];
 %     data(i,:) = [gamrnd(9,0.5,[n,1]); unifrnd(0,10,n,1);];
 %     data(i,:) = [gamrnd(8,0.5,[n,1]); exprnd(1,n,1);];
 %     data = repmat(data,size(Gd,2));
@@ -96,7 +96,7 @@ for k = 1:n_lin_const
                 cf_func = @(t) diracMixtureICC(t,transformed_rv,sigma(k));
                 clear options
                 options.isPlot = false;
-%                 options.xN = 1000; 
+                options.xN = 1000; 
 %                 options.N = 1000;
                 result{k} = cf2DistGP(cf_func,[],[],options);
                 
@@ -136,7 +136,7 @@ toc
 
 prob.Delta = 1-0.8;
 prob.x0 = [0; 0];
-Xd = linspace(50,30,prob.T)';
+Xd = linspace(-50,-50,prob.T)';
 prob.Xd = reshape([Xd'; zeros(size(Xd'))],[],1);
 prob.ulim = 100;
 prob.xlb = res(:,1);
@@ -174,9 +174,7 @@ end
 
 blackmore_mean_time = sum(blackmore_time_to_solve)/length(blackmore_time_to_solve);
 
-%% Validation: 
-
-    %% Monte-Carlo simulation using SReachTools
+%% Monte-Carlo Validation
         n_mcarlo_sims = 1e5;  
         Q = diag(prob.Q);
         Q = repmat(Q,1,n_mcarlo_sims);
@@ -203,8 +201,8 @@ for input_vec_indx = 1:size(collection_of_input_vectors,2)
 %         Wvec(2*i-1:2*i,:) = [normrnd(0,1,n,1)';normrnd(0,0.075,n,1)';];
     %     data(i,:) = [exprnd(1,n,1);];
 %         Wvec(2*i-1:2*i,:) = [exprnd(2,n,1)'; normrnd(1,0.05,n,1)'];
-        Wvec(2*i-1:2*i,:) = [gamrnd(8,0.5,[n,1])'; unifrnd(-0.005,0.005,n,1)'];
-%         Wvec(2*i-1:2*i,:) = [unifrnd(-5,5,n,1)';0.005*gamrnd(8,0.5,[n,1])'; ];
+%         Wvec(2*i-1:2*i,:) = [gamrnd(0.5,1,[n,1])'; unifrnd(-0.05,0.05,n,1)'];
+        Wvec(2*i-1:2*i,:) = [unifrnd(-5,5,n,1)';0.005*gamrnd(8,0.5,[n,1])'; ];
     %     data(i,:) = [gamrnd(9,0.5,[n,1]); unifrnd(0,10,n,1);];
     %     data(i,:) = [gamrnd(8,0.5,[n,1]); exprnd(1,n,1);];
     %     data = repmat(data,size(Gd,2));
