@@ -42,12 +42,12 @@ function [ECFSTOC_time_to_solve,ECFSTOC_total_time,ECFSTOC_opt_input_vector,...
 %% Optimization Problem: 
 cvx_precision best
 tstart = tic;
-cvx_begin quiet
+cvx_begin 
 
     variable U(size(Bd,2),1);
     variable d(n_lin_const, 1);
     
-    minimize((Ad*x0+Bd*U-Xd+Gd*muvec)'*Q*(Ad*x0+Bd*U-Xd+Gd*muvec)+sum(Q*muvec2) + U'*R*U)
+    minimize((Ad*x0+Bd*U-Xd+Gd*muvec)'*Q*(Ad*x0+Bd*U-Xd+Gd*muvec)+trace(Q*Gd*diag(muvec2)*Gd') + U'*R*U)
     
     subject to 
     

@@ -132,7 +132,7 @@ for k = 1:n_lin_const
 end
 toc
 
-%% Determine what Delta can be to maintain feasibility: 
+%% Problem params: 
 
 prob.Delta = 1-0.8;
 prob.x0 = [0; 0];
