@@ -42,7 +42,7 @@ function [ECFSTOC_time_to_solve,ECFSTOC_total_time,ECFSTOC_opt_input_vector,...
 %% Optimization Problem: 
 cvx_precision best
 tstart = tic;
-cvx_begin 
+cvx_begin quiet
 
     variable U(size(Bd,2),1);
     variable d(n_lin_const, 1);

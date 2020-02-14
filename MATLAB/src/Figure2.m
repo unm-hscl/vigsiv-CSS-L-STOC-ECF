@@ -68,19 +68,26 @@ conf_int3 = sqrt(log(2/alpha)/(2*n3));
 
 %% Compute Moments: 
 
-H = 10:50:10000;
+H = 100:100000:1E6;
 
 for j = 1:length(H)
-    datam = [];
-    datam = [unifrnd(0,5,H(j),1); gamrnd(2,5,[H(j),1])]';
-    m(j) = diracMixtureCostmean(datam);
-    [sigma,~,~,~] = kde(datam,H(j),min(datam),max(datam));
-    m2(j) = diracMixtureCostcov(datam,sigma);
     
+    for i  = 1:10
+        tt = tic;
+        datam = [];
+        datam = [unifrnd(0,5,H(j),1); gamrnd(2,5,[H(j),1])]';
+        m(j,i) = diracMixtureCostmean(datam);
+        [sigma,~,~,~] = kde(datam,H(j),min(datam),max(datam));
+        m2(j,i) = diracMixtureCostcov(datam,sigma);
+        ttf(j,i) = toc(tt);
+    end
 end
 
 mtrue = diracMixtureCostmean(datatrue);
 m2true = diracMixtureCostcov(datatrue,sigmat);
+
+stdm = std(m,1,2);
+stdm2 = std(m2,1,2);
 
 
 
@@ -131,14 +138,14 @@ xlabel('$x$')
 set(gca,'ytick',[])
 
 subplot(2,3,4)
-plot(H,m)
+errorbar(H,m(:,1),stdm)
 hold on
 yline(mtrue,'-r','Linewidth',1.5);
 ylabel('E[\textbf{w}]')
 xlabel('\# samples')
 
 subplot(2,3,5)
-plot(H,m2)
+errorbar(H,m2(:,1),stdm2)
 hold on
 yline(m2true,'-r','Linewidth',1.5);
 ylabel('E[\textbf{w}$^2$]')

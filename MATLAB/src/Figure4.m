@@ -58,7 +58,7 @@ for i = 1:size(prob.Gd(:,1:dim:end),2)
 %     data = repmat(data,size(Gd,2));
 end
 
-prob.N = 5;
+prob.N = 50;
 for i = 1:size(prob.Gd(:,1:dim:end),2)
 %     data(2*i-1:2*i,:) = [normrnd(0,1,n,1)';normrnd(0,0.075,n,1)';];
 %       data(i,:) = [exprnd(1,n,1);];
