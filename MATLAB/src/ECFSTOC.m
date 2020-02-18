@@ -67,8 +67,8 @@ cvx_begin quiet
             
             sum(d) <= Delta;
             d >= 0;
-            d <= 1;
             abs(U) <= ulim;
+
 
 t1 = toc(tstart);
 cvx_end

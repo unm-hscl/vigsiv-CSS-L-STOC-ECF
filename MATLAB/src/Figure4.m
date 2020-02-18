@@ -17,8 +17,8 @@ clc, clear, close all
 % Figure params: 
 
 width = 252; 
-height = 150;
-plot_markersize = 15;
+height = 100;
+plot_markersize = 8;
 plot_fontSize = 8;
 plot_linewidth = 2;
 
@@ -56,6 +56,9 @@ for i = 1:size(prob.Gd(:,1:dim:end),2)
 %     data(i,:) = [gamrnd(9,0.5,[n,1]); unifrnd(0,10,n,1);];
 %     data(i,:) = [gamrnd(8,0.5,[n,1]); exprnd(1,n,1);];
 %     data = repmat(data,size(Gd,2));
+    for j = 2*i-1:2*i
+    [sigma(j),~,~,~] = kde(data(j,:),n,min(data(j,:)),max(data(j,:)));
+    end
 end
 
 prob.N = 50;
@@ -92,8 +95,8 @@ tic
 for k = 1:n_lin_const
                 
                 transformed_rv = prob.pbig(k,:)*prob.Gd*data;
-                [sigma(k),~,~,~] =kde(transformed_rv,n,min(transformed_rv),max(transformed_rv));
-                cf_func = @(t) diracMixtureICC(t,transformed_rv,sigma(k));
+%                 [sigma(k),~,~,~] =kde(transformed_rv,n,min(transformed_rv),max(transformed_rv));
+                cf_func = @(t) diracMixtureICC(t,transformed_rv,(prob.pbig(k,:)*prob.Gd)*diag(sigma)*(prob.pbig(k,:)*prob.Gd)');
                 clear options
                 options.isPlot = false;
                 options.xN = 1000; 
@@ -118,16 +121,16 @@ for k = 1:n_lin_const
                 
                 y{k} = min(prob.pu_m{k}.*x{k}(xind:end)+prob.pu_c{k},[],2);
                     
-%                 figure(1)
-%                 title('CDF')
-%                 hold on
-%                 empcdf = histogram(transformed_rv,'Normalization','cdf');
-%                 hold on
-%                 plot(x{k},cdf{k},'-b','LineWidth',2)
-%                 plot(x{k}(xind:end),y{k},'-r','Linewidth',2)
-%                 figure(2); 
-%                 plot(x{k}(xind:end),cdf{k}(xind:end)-y{k})
-%                 hold on
+                figure(1)
+                title('CDF')
+                hold on
+                empcdf = histogram(transformed_rv,'Normalization','cdf');
+                hold on
+                plot(x{k},cdf{k},'-b','LineWidth',2)
+                plot(x{k}(xind:end),y{k},'-r','Linewidth',2)
+                figure(2); 
+                plot(x{k}(xind:end),cdf{k}(xind:end)-y{k})
+                hold on
                 
 end
 toc

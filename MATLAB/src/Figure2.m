@@ -68,11 +68,11 @@ conf_int3 = sqrt(log(2/alpha)/(2*n3));
 
 %% Compute Moments: 
 
-H = 100:100000:1E6;
+H = [100:1E4:1E6];
 
 for j = 1:length(H)
     
-    for i  = 1:10
+    for i  = 1:3
         tt = tic;
         datam = [];
         datam = [unifrnd(0,5,H(j),1); gamrnd(2,5,[H(j),1])]';
@@ -82,9 +82,6 @@ for j = 1:length(H)
         ttf(j,i) = toc(tt);
     end
 end
-
-mtrue = diracMixtureCostmean(datatrue);
-m2true = diracMixtureCostcov(datatrue,sigmat);
 
 stdm = std(m,1,2);
 stdm2 = std(m2,1,2);
@@ -140,16 +137,18 @@ set(gca,'ytick',[])
 subplot(2,3,4)
 errorbar(H,m(:,1),stdm)
 hold on
-yline(mtrue,'-r','Linewidth',1.5);
+yline(m(end,1),'-r','Linewidth',1.5);
 ylabel('E[\textbf{w}]')
 xlabel('\# samples')
+set(gca,'xscale','log')
 
 subplot(2,3,5)
 errorbar(H,m2(:,1),stdm2)
 hold on
-yline(m2true,'-r','Linewidth',1.5);
+yline(m2(end,1),'-r','Linewidth',1.5);
 ylabel('E[\textbf{w}$^2$]')
 xlabel('\# samples')
+set(gca,'xscale','log')
 
 
 
