@@ -17,9 +17,7 @@ function [ECFSTOC_time_to_solve,ECFSTOC_total_time,ECFSTOC_opt_input_vector,...
     muvec = prob.muvec;
     muvec2 = prob.muvec2;
     
-    if isfield(prob,'xterm')
-        xterm = prob.xterm;
-    end
+    xterm = prob.xterm;
     
     
     % Hyperplane constraints:
@@ -74,9 +72,7 @@ cvx_begin quiet
             U <= ulimu;
             U >= uliml;
             
-            if isfield(prob,'xterm')
-                Ad(end-4:end,:)*x0+Bd(end-4:end,end-1:end)*U(end-1:end) == xterm;
-            end
+            Ad(end-4:end,:)*x0+Bd*U == xterm;
 
 t1 = toc(tstart);
 cvx_end

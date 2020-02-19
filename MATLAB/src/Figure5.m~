@@ -55,7 +55,7 @@ Bdis = sysD.B;
 % Note that there is only a disturbance on the states for the position
 % of the quadcopter. 
 
-    G = [1 0;0 1; 0 0; 0 0; 0 0];
+    G = [1 0;0 0; 0 1; 0 0; 0 0];
      
      
  % Defining the disturbance: 
@@ -84,15 +84,15 @@ Bdis = sysD.B;
     
 n = 1000;
 for i = 1:size(prob.Gd(:,1:2:end),2)
-    data(2*i-1:2*i,:) = [2*wblrnd(5,4,[n,1])'; unifrnd(-20,20,n,1)'];
+    data(2*i-1:2*i,:) = [2*wblrnd(5,4,[n,1])'; unifrnd(-0.0001,0.0001,n,1)'];
     for j = 2*i-1:2*i
     [sigma(j),~,~,~] = kde(data(j,:),n,min(data(j,:)),max(data(j,:)));
     end
 end
 
-prob.N = 50;
+prob.N = 5;
 for i = 1:size(prob.Gd(:,1:2:end),2)
-    prob.realizations(2*i-1:2*i,:) = [2*wblrnd(5,4,[prob.N,1])'; unifrnd(-20,20,prob.N,1)'];
+    prob.realizations(2*i-1:2*i,:) = [2*wblrnd(5,4,[prob.N,1])'; unifrnd(-0.001,0.001,prob.N,1)'];
 
 end
     
@@ -107,11 +107,11 @@ end
 %           0 0  1 0 0;];
 %     q = [85000 135000 0.1745 0.1745]';
     
-    p = [-1 0 0 0 0;
-         1 0 0 0 0;
-          0 -1 0 0 0;
-          0 1  0 0 0;];
-    q = [84800 85200 7700 7800]';
+    p = [-1  0  0   0 0;
+          1  0  0   0 0;
+          0  0  1  0 0;
+          0  0  1  0 0;];
+    q = [84800 85200 0.10 0.10]';
 
     pbig = kron(eye(prob.T),p);
     qbig = repmat(q,prob.T,1);
@@ -132,6 +132,8 @@ for k = 1:n_lin_const
                 clear options
                 options.isPlot = false;
                 options.xN = 1000; 
+                options.xMin = min(transformed_rv); 
+                options.xMax = max(transformed_rv);
 %                 options.N = 1000;
                 result{k} = cf2DistGP(cf_func,[],[],options);
                 
@@ -153,7 +155,7 @@ for k = 1:n_lin_const
                 
                 y{k} = min(prob.pu_m{k}.*x{k}(xind:end)+prob.pu_c{k},[],2);
                     
-
+%                 figure
 %                 title('CDF')
 %                 hold on
 %                 empcdf = histogram(transformed_rv,'Normalization','cdf');
@@ -218,11 +220,12 @@ blackmore_mean_time = sum(blackmore_time_to_solve)/length(blackmore_time_to_solv
 Fig4 = figure('Units', 'points', ...
                 'Position', [0, 0, width, 200]); 
 
-       
+subplot(2,1,1)
 hold on
-h1 = plot(P,'alpha',0.1);
+h1 = yline(q(1),'r','LineWidth',plot_linewidth);
+yline(q(2),'r','LineWidth',plot_linewidth)
 h11 = plot(1,prob.x0(1),'.b','MarkerSize',plot_markersize);
-h2 = plot(2:(prob.T+1),Xd(1:end),'go','MarkerSize',...
+h2 = plot(2:(prob.T+1),prob.Xd(1:5:end),'go','MarkerSize',...
     plot_markersize,'LineWidth',2);
 h3 = plot(2:(prob.T+1),ECFSTOC_opt_mean_X(1:5:end),'md',...
     'LineWidth',1,'MarkerSize',plot_markersize);
@@ -233,8 +236,37 @@ set(groot, 'defaultAxesTickLabelInterpreter','latex');
 set(groot, 'defaultLegendInterpreter','latex');
 set(groot, 'defaulttextInterpreter','latex');
 
+% xlabel('Time Step, k')
+ylabel('Altitude, ft')
+% legend([h1 h11 h2 h3 h4],{'Target Tube',...
+%     'Initial state','Target Trajectory',...
+%     'ECF Stochastic Optimal Control',...
+%     sprintf('Particle control (PC), %i Particles',prob.N)},...
+%     'Location','southoutside','FontSize',plot_fontSize);
+box on;
+set(gca,'FontSize',plot_fontSize);
+set(gca,'xtick',[]);
+axis([1 10 84800 85200])
+
+subplot(2,1,2)
+hold on
+h1 = yline(q(3),'r','LineWidth',plot_linewidth);
+yline(q(4),'r','LineWidth',plot_linewidth)
+h11 = plot(1,prob.x0(3),'.b','MarkerSize',plot_markersize);
+h2 = plot(2:(prob.T+1),prob.Xd(3:5:end),'go','MarkerSize',...
+    plot_markersize,'LineWidth',2);
+h3 = plot(2:(prob.T+1),ECFSTOC_opt_mean_X(3:5:end),'md',...
+    'LineWidth',1,'MarkerSize',plot_markersize);
+h4 = plot(2:(prob.T+1),blackmore_opt_mean_X(3:5:end,1),...
+    'ks','MarkerSize',plot_markersize);
+
+set(groot, 'defaultAxesTickLabelInterpreter','latex'); 
+set(groot, 'defaultLegendInterpreter','latex');
+set(groot, 'defaulttextInterpreter','latex');
+
 xlabel('Time Step, k')
-ylabel('Position, x')
+ylabel('Velocity, ft/s')
+% axis([1 10 7650 7750])
 legend([h1 h11 h2 h3 h4],{'Target Tube',...
     'Initial state','Target Trajectory',...
     'ECF Stochastic Optimal Control',...
@@ -272,7 +304,7 @@ for input_vec_indx = 1:size(collection_of_input_vectors,2)
     %     data(i,:) = [exprnd(1,n,1);];
 %         Wvec(2*i-1:2*i,:) = [exprnd(2,n,1)'; normrnd(1,0.05,n,1)'];
 %         Wvec(2*i-1:2*i,:) = [gamrnd(0.5,1,[n,1])'; unifrnd(-0.05,0.05,n,1)'];
-        Wvec(2*i-1:2*i,:) = [2*wblrnd(5,4,[n,1])'; unifrnd(-20,20,n,1)'];
+        Wvec(2*i-1:2*i,:) = [2*wblrnd(5,4,[n,1])'; unifrnd(-0.001,0.001,n,1)'];
     %     data(i,:) = [gamrnd(9,0.5,[n,1]); unifrnd(0,10,n,1);];
     %     data(i,:) = [gamrnd(8,0.5,[n,1]); exprnd(1,n,1);];
     %     data = repmat(data,size(Gd,2));

@@ -99,7 +99,9 @@ for k = 1:n_lin_const
                 cf_func = @(t) diracMixtureICC(t,transformed_rv,(prob.pbig(k,:)*prob.Gd)*diag(sigma)*(prob.pbig(k,:)*prob.Gd)');
                 clear options
                 options.isPlot = false;
-                options.xN = 1000; 
+                options.xN = 1000;
+                options.xMin = min(transformed_rv); 
+                options.xMax = max(transformed_rv);
 %                 options.N = 1000;
                 result{k} = cf2DistGP(cf_func,[],[],options);
                 
@@ -141,7 +143,8 @@ prob.Delta = 1-0.8;
 prob.x0 = [0; 0];
 Xd = linspace(-50,-50,prob.T)';
 prob.Xd = reshape([Xd'; zeros(size(Xd'))],[],1);
-prob.ulim = 100;
+prob.ulimu = 100;
+prob.uliml = -100;
 prob.xlb = res(:,1);
 
 %% Generate Moments for the Quadratic Cost: 

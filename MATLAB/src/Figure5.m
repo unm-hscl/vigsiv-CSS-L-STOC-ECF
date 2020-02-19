@@ -101,23 +101,24 @@ end
 
     % Specify safe set: 
 
-%     p = [-1 zeros(1,4);
-%           1 zeros(1,4);
-%           0 0 -1 0 0;
-%           0 0  1 0 0;];
-%     q = [85000 135000 0.1745 0.1745]';
-    
-    p = [-1  0 0 0 0;
-          1  0 0 0 0;
-          0 -1 0 0 0;
+    p = [-1 zeros(1,4);
+          1 zeros(1,4);
+          0 -1  0 0 0;
           0  1  0 0 0;];
-    q = [84800 85200 7650 7750]';
+    q = [-85000 135000 -7650 7750]';
+    
+%     p = [-1  0 0   0 0;
+%           1  -1 0   0 0;
+%           0  1 -1 0 0;
+%           0  0  1 0 0;];
+%     q = [84800 85200 deg2rad(10) deg2rad(10)]';
 
     pbig = kron(eye(prob.T),p);
     qbig = repmat(q,prob.T,1);
 
     prob.pbig = pbig; 
     prob.qbig = qbig;
+
     
     n_lin_const = size(pbig,1); 
 
@@ -132,6 +133,8 @@ for k = 1:n_lin_const
                 clear options
                 options.isPlot = false;
                 options.xN = 1000; 
+                options.xMin = min(transformed_rv); 
+                options.xMax = max(transformed_rv);
 %                 options.N = 1000;
                 result{k} = cf2DistGP(cf_func,[],[],options);
                 
@@ -153,16 +156,16 @@ for k = 1:n_lin_const
                 
                 y{k} = min(prob.pu_m{k}.*x{k}(xind:end)+prob.pu_c{k},[],2);
                     
-
-                title('CDF')
-                hold on
-                empcdf = histogram(transformed_rv,'Normalization','cdf');
-                hold on
-                plot(x{k},cdf{k},'-b','LineWidth',2)
-                plot(x{k}(xind:end),y{k},'-r','Linewidth',2)
-                figure(2); 
-                plot(x{k}(xind:end),cdf{k}(xind:end)-y{k})
-                hold on
+%                 figure
+%                 title('CDF')
+%                 hold on
+%                 empcdf = histogram(transformed_rv,'Normalization','cdf');
+%                 hold on
+%                 plot(x{k},cdf{k},'-b','LineWidth',2)
+%                 plot(x{k}(xind:end),y{k},'-r','Linewidth',2)
+%                 figure(2); 
+%                 plot(x{k}(xind:end),cdf{k}(xind:end)-y{k})
+%                 hold on
                 
 end
 toc
@@ -177,12 +180,16 @@ Xd3 = linspace(deg2rad(1.5153),deg2rad(1.5153),prob.T)';
 Xd4 = linspace(deg2rad(1.5153),deg2rad(1.5153),prob.T)';
 Xd5 = linspace(0,0,prob.T)';
 prob.Xd = reshape([Xd1'; Xd2';Xd3';Xd4';Xd5'],[],1);
-prob.ulim = repmat([0.2514; deg2rad(11.4635)],prob.T,1);
+prob.ulimu = repmat([1.2; 0.2618],prob.T,1);
+prob.uliml = repmat([0.2; -0.2618],prob.T,1);
 prob.xlb = res(:,1);
 
+% prob.xterm = prob.x0;
+
 %% Generate Moments for the Quadratic Cost: 
-prob.R = 0.01*eye(size(prob.Bd,2));
+prob.R = 1E-2*eye(size(prob.Bd,2));
 prob.Q = 10*eye(size(prob.Ad,1));
+% prob.Q(end-4:end,end-4:end) = 1000*prob.Q(end-4:end,end-4:end);
 prob.D = chol(prob.Q);
 
 for i = 1:size(data,1)
@@ -220,7 +227,7 @@ Fig4 = figure('Units', 'points', ...
 
 subplot(2,1,1)
 hold on
-h1 = yline(q(1),'r','LineWidth',plot_linewidth);
+h1 = yline(-q(1),'r','LineWidth',plot_linewidth);
 yline(q(2),'r','LineWidth',plot_linewidth)
 h11 = plot(1,prob.x0(1),'.b','MarkerSize',plot_markersize);
 h2 = plot(2:(prob.T+1),prob.Xd(1:5:end),'go','MarkerSize',...
@@ -248,7 +255,7 @@ axis([1 10 84800 85200])
 
 subplot(2,1,2)
 hold on
-h1 = yline(q(3),'r','LineWidth',plot_linewidth);
+h1 = yline(-q(3),'r','LineWidth',plot_linewidth);
 yline(q(4),'r','LineWidth',plot_linewidth)
 h11 = plot(1,prob.x0(2),'.b','MarkerSize',plot_markersize);
 h2 = plot(2:(prob.T+1),prob.Xd(2:5:end),'go','MarkerSize',...
