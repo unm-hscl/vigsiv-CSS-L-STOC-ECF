@@ -95,6 +95,47 @@ for i = 1:size(prob.Gd(:,1:2:end),2)
     prob.realizations(2*i-1:2*i,:) = [2*wblrnd(5,4,[prob.N,1])'; gamrnd(5,1,prob.N,1)'];
 
 end
+
+
+% Compute upper and lower bounds on the mean: 
+
+for i = 1:size(prob.Gd,1)
+    
+   
+    cf_func_c = @(t) diracMixtureICC(t,prob.Gd(i,:)*data,prob.Gd(i,:)*diag(sigma)*prob.Gd(i,:)');
+    clear options
+    options.isPlot = false;
+    options.xN = n;
+    options.xMin = min(prob.Gd(i,:)*data); 
+    options.xMax = max(prob.Gd(i,:)*data);
+    result_conf{i} = cf2DistGP(cf_func_c,[],[],options);
+
+    xc{i} = fliplr(result_conf{1,i}.x)';
+    cdfc{i} = fliplr(result_conf{1,i}.cdf)';
+    
+    % Compute confidence: 
+    
+    confidence = 0.90;
+    epsil(i) = sqrt(1/(2*n)*log(1/(1-confidence)));
+    
+    cdfl{i} = cdfc{i} - epsil(i); 
+    cdfu{i} = cdfc{i} + epsil(i);
+    
+    % Mean confidence intervals: 
+    
+    GdWu(i) = max(xc{i}) - trapz(xc{i},cdfl{i}); 
+    GdWl(i) = max(xc{i}) - trapz(xc{i},cdfu{i}); 
+    
+%     figure
+%     title('CDF')
+%     hold on
+%     empcdf = histogram(prob.Gd(i,:)*data,'Normalization','cdf');
+%     hold on
+%     plot(xc{i},cdfc{i},'-b','LineWidth',2)
+%     plot(xc{i},cdfl{i},'-r','Linewidth',2)
+%     plot(xc{i},cdfu{i},'-r','Linewidth',2)
+    
+end
     
     
 % Compute the cdf using the Gil-Pelaez inversion formula: 
@@ -105,7 +146,7 @@ end
           1 zeros(1,4);
           0 -1  0 0 0;
           0  1  0 0 0;];
-    q = [-85000 135000 -7650 7750]';
+    q = [-85000 85200 -7650 7750]';
     
 %     p = [-1  0 0   0 0;
 %           1  -1 0   0 0;
@@ -220,66 +261,6 @@ end
 
 blackmore_mean_time = sum(blackmore_time_to_solve)/length(blackmore_time_to_solve);
 
-%% Plotting
-
-Fig4 = figure('Units', 'points', ...
-                'Position', [0, 0, width, 200]); 
-
-subplot(2,1,1)
-hold on
-h1 = yline(-q(1),'r','LineWidth',plot_linewidth);
-yline(q(2),'r','LineWidth',plot_linewidth)
-h11 = plot(1,prob.x0(1),'.b','MarkerSize',plot_markersize);
-h2 = plot(2:(prob.T+1),prob.Xd(1:5:end),'go','MarkerSize',...
-    plot_markersize,'LineWidth',2);
-h3 = plot(2:(prob.T+1),ECFSTOC_opt_mean_X(1:5:end),'md',...
-    'LineWidth',1,'MarkerSize',plot_markersize);
-h4 = plot(2:(prob.T+1),blackmore_opt_mean_X(1:5:end,1),...
-    'ks','MarkerSize',plot_markersize);
-
-set(groot, 'defaultAxesTickLabelInterpreter','latex'); 
-set(groot, 'defaultLegendInterpreter','latex');
-set(groot, 'defaulttextInterpreter','latex');
-
-% xlabel('Time Step, k')
-ylabel('Altitude, ft')
-% legend([h1 h11 h2 h3 h4],{'Target Tube',...
-%     'Initial state','Target Trajectory',...
-%     'ECF Stochastic Optimal Control',...
-%     sprintf('Particle control (PC), %i Particles',prob.N)},...
-%     'Location','southoutside','FontSize',plot_fontSize);
-box on;
-set(gca,'FontSize',plot_fontSize);
-set(gca,'xtick',[]);
-axis([1 10 84800 85200])
-
-subplot(2,1,2)
-hold on
-h1 = yline(-q(3),'r','LineWidth',plot_linewidth);
-yline(q(4),'r','LineWidth',plot_linewidth)
-h11 = plot(1,prob.x0(2),'.b','MarkerSize',plot_markersize);
-h2 = plot(2:(prob.T+1),prob.Xd(2:5:end),'go','MarkerSize',...
-    plot_markersize,'LineWidth',2);
-h3 = plot(2:(prob.T+1),ECFSTOC_opt_mean_X(2:5:end),'md',...
-    'LineWidth',1,'MarkerSize',plot_markersize);
-h4 = plot(2:(prob.T+1),blackmore_opt_mean_X(2:5:end,1),...
-    'ks','MarkerSize',plot_markersize);
-
-set(groot, 'defaultAxesTickLabelInterpreter','latex'); 
-set(groot, 'defaultLegendInterpreter','latex');
-set(groot, 'defaulttextInterpreter','latex');
-
-xlabel('Time Step, k')
-ylabel('Velocity, ft/s')
-axis([1 10 7650 7750])
-legend([h1 h11 h2 h3 h4],{'Target Tube',...
-    'Initial state','Target Trajectory',...
-    'ECF Stochastic Optimal Control',...
-    sprintf('Particle control (PC), %i Particles',prob.N)},...
-    'Location','southoutside','FontSize',plot_fontSize);
-box on;
-set(gca,'FontSize',plot_fontSize);
-
 
 %% Monte-Carlo Validation
         n_mcarlo_sims = 1e5;  
@@ -335,6 +316,79 @@ for input_vec_indx = 1:size(collection_of_input_vectors,2)
                 relative_abserror_in_cost(input_vec_indx));
     end
 end
+
+
+
+%% Plotting
+
+Fig4 = figure('Units', 'points', ...
+                'Position', [0, 0, width, 200]); 
+
+subplot(2,1,1)
+hold on
+h1 = yline(-q(1),'r','LineWidth',plot_linewidth);
+yline(q(2),'r','LineWidth',plot_linewidth)
+h11 = plot(1,prob.x0(1),'.b','MarkerSize',plot_markersize);
+h2 = plot(2:(prob.T+1),prob.Xd(1:5:end),'go','MarkerSize',...
+    plot_markersize,'LineWidth',2);
+h3 = plot(2:(prob.T+1),ECFSTOC_opt_mean_X(1:5:end),'md',...
+    'LineWidth',1,'MarkerSize',plot_markersize);
+xl = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+GdWl';
+xu = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+GdWu';
+xm = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+prob.Gd*Wvec;
+xlp = plot(2:(prob.T+1),xl(1:5:end),'r','LineWidth',1);
+xup = plot(2:(prob.T+1),xu(1:5:end),'r','LineWidth',1);
+h4 = plot(2:(prob.T+1),blackmore_opt_mean_X(1:5:end,1),...
+    'ks','MarkerSize',plot_markersize);
+
+set(groot, 'defaultAxesTickLabelInterpreter','latex'); 
+set(groot, 'defaultLegendInterpreter','latex');
+set(groot, 'defaulttextInterpreter','latex');
+
+% xlabel('Time Step, k')
+ylabel('Altitude, ft')
+% legend([h1 h11 h2 h3 h4],{'Target Tube',...
+%     'Initial state','Target Trajectory',...
+%     'ECF Stochastic Optimal Control',...
+%     sprintf('Particle control (PC), %i Particles',prob.N)},...
+%     'Location','southoutside','FontSize',plot_fontSize);
+box on;
+set(gca,'FontSize',plot_fontSize);
+set(gca,'xtick',[]);
+axis([1 10 85000 85200])
+
+subplot(2,1,2)
+hold on
+h1 = yline(-q(3),'r','LineWidth',plot_linewidth);
+yline(q(4),'r','LineWidth',plot_linewidth)
+h11 = plot(1,prob.x0(2),'.b','MarkerSize',plot_markersize);
+h2 = plot(2:(prob.T+1),prob.Xd(2:5:end),'go','MarkerSize',...
+    plot_markersize,'LineWidth',2);
+h3 = plot(2:(prob.T+1),ECFSTOC_opt_mean_X(2:5:end),'md',...
+    'LineWidth',1,'MarkerSize',plot_markersize);
+xl = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+GdWl';
+xu = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+GdWu';
+xm = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+prob.Gd*Wvec;
+xlp = plot(2:(prob.T+1),xl(2:5:end),'r','LineWidth',1);
+xup = plot(2:(prob.T+1),xu(2:5:end),'r','LineWidth',1);
+h4 = plot(2:(prob.T+1),blackmore_opt_mean_X(2:5:end,1),...
+    'ks','MarkerSize',plot_markersize);
+
+set(groot, 'defaultAxesTickLabelInterpreter','latex'); 
+set(groot, 'defaultLegendInterpreter','latex');
+set(groot, 'defaulttextInterpreter','latex');
+
+xlabel('Time Step, k')
+ylabel('Velocity, ft/s')
+axis([1 10 7650 7750])
+legend([h1 h11 h2 h3 xlp h4],{'Target Tube',...
+    'Initial state','Target Trajectory',...
+    'ECF Stochastic Optimal Control',...
+    'Confidence interval',...
+    sprintf('Particle control (PC), %i Particles',prob.N)},...
+    'Location','southoutside','FontSize',plot_fontSize);
+box on;
+set(gca,'FontSize',plot_fontSize);
 
 function m = diracMixtureCostmean(data)
 

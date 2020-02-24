@@ -15,7 +15,7 @@ clc, clear, close all
 % Figure params: 
 
 width = 252; 
-height = 150;
+height = 90;
 plot_markersize = 15;
 plot_fontSize = 8;
 plot_linewidth = 2;
@@ -68,7 +68,7 @@ conf_int3 = sqrt(log(2/alpha)/(2*n3));
 
 %% Compute Moments: 
 
-H = [100:1E4:1E6];
+H = [1000:1E4:5E5];
 
 for j = 1:length(H)
     
@@ -104,7 +104,7 @@ plot(result1.x,result1.cdf+conf_int1,'-b','LineWidth',1.5)
 plot(result1.x,result1.cdf-conf_int1,'-b','LineWidth',1.5)
 % ax = gca;
 % ax.Position = [0.1 0.1 0.4 0.8];
-axis([-13 13 0 1])
+axis([-13 20 0 1])
 xlabel('$x$')
 ylabel('$\Phi_{\textbf{w}}(x)$')
 
@@ -117,7 +117,7 @@ plot(result2.x,result2.cdf+conf_int2,'-b','LineWidth',1.5)
 plot(result2.x,result2.cdf-conf_int2,'-b','LineWidth',1.5)
 % ax = gca;
 % ax.Position = [0.1 0.1 0.4 0.8];
-axis([-13 13 0 1])
+axis([-13 20 0 1])
 xlabel('$x$')
 set(gca,'ytick',[])
 
@@ -130,12 +130,12 @@ plot(result3.x,result3.cdf+conf_int3,'-b','LineWidth',1.5)
 plot(result3.x,result3.cdf-conf_int3,'-b','LineWidth',1.5)
 % ax = gca;
 % ax.Position = [0.1 0.1 0.4 0.8];
-axis([-13 13 0 1])
+axis([-13 20 0 1])
 xlabel('$x$')
 set(gca,'ytick',[])
 
 subplot(2,3,4)
-errorbar(H,m(:,1),stdm)
+plot(H,m(:,1)) %,stdm)
 hold on
 yline(m(end,1),'-r','Linewidth',1.5);
 ylabel('E[\textbf{w}]')
@@ -143,7 +143,7 @@ xlabel('\# samples')
 set(gca,'xscale','log')
 
 subplot(2,3,5)
-errorbar(H,m2(:,1),stdm2)
+plot(H,m2(:,1)) %stdm2)
 hold on
 yline(m2(end,1),'-r','Linewidth',1.5);
 ylabel('E[\textbf{w}$^2$]')

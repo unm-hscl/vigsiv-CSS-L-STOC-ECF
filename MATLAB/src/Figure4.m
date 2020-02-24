@@ -73,10 +73,45 @@ for i = 1:size(prob.Gd(:,1:dim:end),2)
 %     data = repmat(data,size(Gd,2));
 end
 
+% Compute upper and lower bounds on the mean: 
 
+for i = 1:size(data,1)
+    
+   
+    cf_func_c = @(t) diracMixtureICC(t,prob.Gd(i,:)*data,prob.Gd(i,:)*diag(sigma)*prob.Gd(i,:)');
+    clear options
+    options.isPlot = false;
+    options.xN = n;
+    options.xMin = min(prob.Gd(i,:)*data); 
+    options.xMax = max(prob.Gd(i,:)*data);
+    result_conf{i} = cf2DistGP(cf_func_c,[],[],options);
 
-
-
+    xc{i} = fliplr(result_conf{1,i}.x)';
+    cdfc{i} = fliplr(result_conf{1,i}.cdf)';
+    
+    % Compute confidence: 
+    
+    confidence = 0.90;
+    epsil(i) = sqrt(1/(2*n)*log(1/(1-confidence)));
+    
+    cdfl{i} = cdfc{i} - epsil(i); 
+    cdfu{i} = cdfc{i} + epsil(i);
+    
+    % Mean confidence intervals: 
+    
+    GdWu(i) = max(xc{i}) - trapz(xc{i},cdfl{i}); 
+    GdWl(i) = max(xc{i}) - trapz(xc{i},cdfu{i}); 
+    
+%     figure
+%     title('CDF')
+%     hold on
+%     empcdf = histogram(prob.Gd(i,:)*data,'Normalization','cdf');
+%     hold on
+%     plot(xc{i},cdfc{i},'-b','LineWidth',2)
+%     plot(xc{i},cdfl{i},'-r','Linewidth',2)
+%     plot(xc{i},cdfu{i},'-r','Linewidth',2)
+    
+end
 
 % Generate the characteristic function to invert. 
 
@@ -106,7 +141,6 @@ for k = 1:n_lin_const
                 result{k} = cf2DistGP(cf_func,[],[],options);
                 
                 x{k} = fliplr(result{1,k}.x)';
-                pdf{k} = fliplr(result{1,k}.pdf)';
                 cdf{k} = fliplr(result{1,k}.cdf)';
                 
 %                 x{k} = result{1,k}.x';
@@ -123,16 +157,16 @@ for k = 1:n_lin_const
                 
                 y{k} = min(prob.pu_m{k}.*x{k}(xind:end)+prob.pu_c{k},[],2);
                     
-                figure(1)
-                title('CDF')
-                hold on
-                empcdf = histogram(transformed_rv,'Normalization','cdf');
-                hold on
-                plot(x{k},cdf{k},'-b','LineWidth',2)
-                plot(x{k}(xind:end),y{k},'-r','Linewidth',2)
-                figure(2); 
-                plot(x{k}(xind:end),cdf{k}(xind:end)-y{k})
-                hold on
+%                 figure(2)
+%                 title('CDF')
+%                 hold on
+%                 empcdf = histogram(transformed_rv,'Normalization','cdf');
+%                 hold on
+%                 plot(x{k},cdf{k},'-b','LineWidth',2)
+%                 plot(x{k}(xind:end),y{k},'-r','Linewidth',2)
+%                 figure(2); 
+%                 plot(x{k}(xind:end),cdf{k}(xind:end)-y{k})
+%                 hold on
                 
 end
 toc
@@ -152,17 +186,12 @@ prob.R = kron(eye(prob.T),0.01);
 prob.Q = 10*eye(size(prob.Gd,2));
 prob.D = chol(prob.Q);
 
-for i = 1:size(data,1)
-    [sigma2(i,:),~,~,~] =kde(data(i,:),size(data,2),...
-        min(data(i,:)),max(data(i,:)));
-end
-
 disp('Computing Moments for Cost')
 tic
 % E[w] -- mean
 prob.muvec =  diracMixtureCostmean(data);
 % E[W'W]
-m2 = diracMixtureCostcov(data,sigma2);
+m2 = diracMixtureCostcov(data,sigma');
 prob.muvec2 = m2- prob.muvec.^2;
 toc
 
@@ -250,8 +279,17 @@ h2 = plot(2:(prob.T+1),Xd(1:end),'go','MarkerSize',...
     plot_markersize,'LineWidth',2);
 h3 = plot(2:(prob.T+1),ECFSTOC_opt_mean_X(1:2:end),'md',...
     'LineWidth',1,'MarkerSize',plot_markersize);
+xl = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+GdWl';
+xu = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+GdWu';
+xm = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+prob.Gd*Wvec;
+xlp = plot(2:(prob.T+1),xl(1:2:end),'r','LineWidth',1);
+xup = plot(2:(prob.T+1),xu(1:2:end),'r','LineWidth',1);
+% for h = 1:n_mcarlo_sims/100
+%     xmp = plot(2:(prob.T+1),xm(1:2:end,h));
+% end
 h4 = plot(2:(prob.T+1),blackmore_opt_mean_X(1:2:end,1),...
     'ks','MarkerSize',plot_markersize);
+
 
 set(groot, 'defaultAxesTickLabelInterpreter','latex'); 
 set(groot, 'defaultLegendInterpreter','latex');
@@ -259,10 +297,11 @@ set(groot, 'defaulttextInterpreter','latex');
 
 xlabel('Time Step, k')
 ylabel('Position, x')
-legend([h1 h11 h2 h3 h4],{'Target Tube',...
+legend([h1 h11 h2 h3 xlp h4],{'Safety Boundary',...
     'Initial state','Target Trajectory',...
     'ECF Stochastic Optimal Control',...
-    sprintf('Particle control (PC), %i Particles',prob.N)},...
+    'Confidence interval',...
+    sprintf('Particle control, %i Particles',prob.N)},...
     'Location','southoutside','FontSize',plot_fontSize);
 box on;
 set(gca,'FontSize',plot_fontSize);
