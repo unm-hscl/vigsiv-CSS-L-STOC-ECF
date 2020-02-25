@@ -90,7 +90,7 @@ for i = 1:size(prob.Gd(:,1:2:end),2)
     end
 end
 
-prob.N = 50;
+prob.N = 5;
 for i = 1:size(prob.Gd(:,1:2:end),2)
     prob.realizations(2*i-1:2*i,:) = [2*wblrnd(5,4,[prob.N,1])'; gamrnd(5,1,prob.N,1)'];
 
@@ -191,7 +191,7 @@ for k = 1:n_lin_const
                     piecewiseUnder(x{k},cdf{k},1E-3,20);
                 
                 prob.pu_m{k} = [prob.pu_m{k} 0];
-                prob.pu_c{k} = [prob.pu_c{k} 1];
+                prob.pu_c{k} = [prob.pu_c{k} cdf{k}(end)];
                 
                 xind = find(x{k}==res(k,1));
                 

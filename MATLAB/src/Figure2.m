@@ -130,7 +130,7 @@ plot(result3.x,result3.cdf+conf_int3,'-b','LineWidth',1.5)
 plot(result3.x,result3.cdf-conf_int3,'-b','LineWidth',1.5)
 % ax = gca;
 % ax.Position = [0.1 0.1 0.4 0.8];
-axis([-13 20 0 1])
+axis([-5 25 0 1])
 xlabel('$x$')
 set(gca,'ytick',[])
 

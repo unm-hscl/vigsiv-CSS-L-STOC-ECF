@@ -61,7 +61,7 @@ for i = 1:size(prob.Gd(:,1:dim:end),2)
     end
 end
 
-prob.N = 50;
+prob.N = 5;
 for i = 1:size(prob.Gd(:,1:dim:end),2)
 %     data(2*i-1:2*i,:) = [normrnd(0,1,n,1)';normrnd(0,0.075,n,1)';];
 %       data(i,:) = [exprnd(1,n,1);];
@@ -151,7 +151,7 @@ for k = 1:n_lin_const
                     piecewiseUnder(x{k},cdf{k},1E-3,20);
                 
                 prob.pu_m{k} = [prob.pu_m{k} 0];
-                prob.pu_c{k} = [prob.pu_c{k} 1];
+                prob.pu_c{k} = [prob.pu_c{k} cdf{k}(end)];
                 
                 xind = find(x{k}==res(k,1));
                 
