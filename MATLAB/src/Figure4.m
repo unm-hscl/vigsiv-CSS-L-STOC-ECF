@@ -17,9 +17,9 @@ clc, clear, close all
 % Figure params: 
 
 width = 252; 
-height = 100;
+height = 150;
 plot_markersize = 8;
-plot_fontSize = 8;
+plot_fontSize = 9;
 plot_linewidth = 2;
 
 %% System dynamics: 
@@ -61,7 +61,7 @@ for i = 1:size(prob.Gd(:,1:dim:end),2)
     end
 end
 
-prob.N = 100;
+prob.N = 50;
 for i = 1:size(prob.Gd(:,1:dim:end),2)
 %     data(2*i-1:2*i,:) = [normrnd(0,1,n,1)';normrnd(0,0.075,n,1)';];
 %       data(i,:) = [exprnd(1,n,1);];
@@ -268,26 +268,26 @@ end
 %% Plotting
 
 Fig4 = figure('Units', 'points', ...
-                'Position', [0, 0, width, 200]); 
-polyvertex =[1:prob.T+1,1:prob.T+1;[-prob.qbig(1),-prob.qbig(1:2:end)'],...
+                'Position', [0, 0, width, height]); 
+polyvertex =[0:prob.T,0:prob.T;[-prob.qbig(1),-prob.qbig(1:2:end)'],...
         [prob.qbig(1),prob.qbig(1:2:end)']]'; % Note: This needs MPT to run!!
 P = Polyhedron('V',polyvertex);
 hold on
 h1 = plot(P,'alpha',0.1);
-h11 = plot(1,prob.x0(1),'.b','MarkerSize',plot_markersize);
-h2 = plot(2:(prob.T+1),Xd(1:end),'go','MarkerSize',...
+h11 = plot(0,prob.x0(1),'.b','MarkerSize',plot_markersize);
+h2 = plot(1:(prob.T),Xd(1:end),'go','MarkerSize',...
     plot_markersize,'LineWidth',2);
-h3 = plot(2:(prob.T+1),ECFSTOC_opt_mean_X(1:2:end),'md',...
+h3 = plot(1:(prob.T),ECFSTOC_opt_mean_X(1:2:end),'md',...
     'LineWidth',1,'MarkerSize',plot_markersize);
 xl = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+GdWl';
 xu = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+GdWu';
 xm = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+prob.Gd*Wvec;
-xlp = plot(2:(prob.T+1),xl(1:2:end),'r','LineWidth',1);
-xup = plot(2:(prob.T+1),xu(1:2:end),'r','LineWidth',1);
+xlp = plot(1:(prob.T),xl(1:2:end),'r','LineWidth',1);
+xup = plot(1:(prob.T),xu(1:2:end),'r','LineWidth',1);
 % for h = 1:n_mcarlo_sims/100
 %     xmp = plot(2:(prob.T+1),xm(1:2:end,h));
 % end
-h4 = plot(2:(prob.T+1),blackmore_opt_mean_X(1:2:end,1),...
+h4 = plot(1:(prob.T),blackmore_opt_mean_X(1:2:end,1),...
     'ks','MarkerSize',plot_markersize);
 
 
@@ -297,9 +297,9 @@ set(groot, 'defaulttextInterpreter','latex');
 
 xlabel('Time Step, k')
 ylabel('Position, x')
-legend([h1 h11 h2 h3 xlp h4],{'Safety Boundary',...
-    'Initial state','Target Trajectory',...
-    'ECF Stochastic Optimal Control',...
+legend([h1 h11 h2 h3 xlp h4],{'Safety boundary',...
+    'Initial state','Target trajectory',...
+    'Algorithm 2',...
     'Confidence interval',...
     sprintf('Particle control, %i Particles',prob.N)},...
     'Location','southoutside','FontSize',plot_fontSize);

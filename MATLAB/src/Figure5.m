@@ -18,7 +18,7 @@ clc, clear, close all
 
 width = 252; 
 height = 150;
-plot_markersize = 15;
+plot_markersize = 8;
 plot_fontSize = 8;
 plot_linewidth = 2;
 
@@ -322,23 +322,23 @@ end
 %% Plotting
 
 Fig4 = figure('Units', 'points', ...
-                'Position', [0, 0, width, 200]); 
+                'Position', [0, 0, width, height]); 
 
 subplot(2,1,1)
 hold on
 h1 = yline(-q(1),'r','LineWidth',plot_linewidth);
 yline(q(2),'r','LineWidth',plot_linewidth)
-h11 = plot(1,prob.x0(1),'.b','MarkerSize',plot_markersize);
-h2 = plot(2:(prob.T+1),prob.Xd(1:5:end),'go','MarkerSize',...
+h11 = plot(0,prob.x0(1),'.b','MarkerSize',plot_markersize);
+h2 = plot(1:(prob.T),prob.Xd(1:5:end),'go','MarkerSize',...
     plot_markersize,'LineWidth',2);
-h3 = plot(2:(prob.T+1),ECFSTOC_opt_mean_X(1:5:end),'md',...
+h3 = plot(1:(prob.T),ECFSTOC_opt_mean_X(1:5:end),'md',...
     'LineWidth',1,'MarkerSize',plot_markersize);
 xl = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+GdWl';
 xu = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+GdWu';
 xm = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+prob.Gd*Wvec;
-xlp = plot(2:(prob.T+1),xl(1:5:end),'r','LineWidth',1);
-xup = plot(2:(prob.T+1),xu(1:5:end),'r','LineWidth',1);
-h4 = plot(2:(prob.T+1),blackmore_opt_mean_X(1:5:end,1),...
+xlp = plot(1:(prob.T),xl(1:5:end),'r','LineWidth',1);
+xup = plot(1:(prob.T),xu(1:5:end),'r','LineWidth',1);
+h4 = plot(1:(prob.T),blackmore_opt_mean_X(1:5:end,1),...
     'ks','MarkerSize',plot_markersize);
 
 set(groot, 'defaultAxesTickLabelInterpreter','latex'); 
@@ -355,23 +355,23 @@ ylabel('Altitude, ft')
 box on;
 set(gca,'FontSize',plot_fontSize);
 set(gca,'xtick',[]);
-axis([1 10 85000 85200])
+axis([0 10 84900 85200])
 
 subplot(2,1,2)
 hold on
 h1 = yline(-q(3),'r','LineWidth',plot_linewidth);
 yline(q(4),'r','LineWidth',plot_linewidth)
-h11 = plot(1,prob.x0(2),'.b','MarkerSize',plot_markersize);
-h2 = plot(2:(prob.T+1),prob.Xd(2:5:end),'go','MarkerSize',...
+h11 = plot(0,prob.x0(2),'.b','MarkerSize',plot_markersize);
+h2 = plot(1:(prob.T),prob.Xd(2:5:end),'go','MarkerSize',...
     plot_markersize,'LineWidth',2);
-h3 = plot(2:(prob.T+1),ECFSTOC_opt_mean_X(2:5:end),'md',...
+h3 = plot(1:prob.T,ECFSTOC_opt_mean_X(2:5:end),'md',...
     'LineWidth',1,'MarkerSize',plot_markersize);
 xl = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+GdWl';
 xu = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+GdWu';
 xm = prob.Ad*prob.x0+prob.Bd*ECFSTOC_opt_input_vector+prob.Gd*Wvec;
-xlp = plot(2:(prob.T+1),xl(2:5:end),'r','LineWidth',1);
-xup = plot(2:(prob.T+1),xu(2:5:end),'r','LineWidth',1);
-h4 = plot(2:(prob.T+1),blackmore_opt_mean_X(2:5:end,1),...
+xlp = plot(1:(prob.T),xl(2:5:end),'r','LineWidth',1);
+xup = plot(1:(prob.T),xu(2:5:end),'r','LineWidth',1);
+h4 = plot(1:(prob.T),blackmore_opt_mean_X(2:5:end,1),...
     'ks','MarkerSize',plot_markersize);
 
 set(groot, 'defaultAxesTickLabelInterpreter','latex'); 
@@ -380,13 +380,13 @@ set(groot, 'defaulttextInterpreter','latex');
 
 xlabel('Time Step, k')
 ylabel('Velocity, ft/s')
-axis([1 10 7650 7750])
-legend([h1 h11 h2 h3 xlp h4],{'Target Tube',...
+axis([0 10 7650 7750])
+legend([h1 h11 h2 h3 xlp h4],{'Safety boundary',...
     'Initial state','Target Trajectory',...
-    'ECF Stochastic Optimal Control',...
+    'Algortihm 2',...
     'Confidence interval',...
-    sprintf('Particle control (PC), %i Particles',prob.N)},...
-    'Location','southoutside','FontSize',plot_fontSize);
+    sprintf('Particle control, %i Particles',prob.N)},...
+    'Location','eastoutside','FontSize',plot_fontSize);
 box on;
 set(gca,'FontSize',plot_fontSize);
 
