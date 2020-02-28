@@ -90,7 +90,7 @@ for i = 1:size(prob.Gd(:,1:2:end),2)
     end
 end
 
-prob.N = 5;
+prob.N = 50;
 for i = 1:size(prob.Gd(:,1:2:end),2)
     prob.realizations(2*i-1:2*i,:) = [2*wblrnd(5,4,[prob.N,1])'; gamrnd(5,1,prob.N,1)'];
 
