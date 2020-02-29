@@ -132,17 +132,17 @@ xlabel('$x$')
 set(gca,'ytick',[])
 
 subplot(2,3,4)
-plot(H,m(:,1)) %,stdm)
+plot(H,m(:)) %,stdm)
 hold on
-yline(m(end,1),'-r','Linewidth',1.5);
+yline(m(end),'-r','Linewidth',1.5);
 ylabel('E[\textbf{w}]')
 xlabel('\# samples')
 set(gca,'xscale','log')
 
 subplot(2,3,5)
-plot(H,m2(:,1)) %stdm2)
+plot(H,m2(:)) %stdm2)
 hold on
-yline(m2(end,1),'-r','Linewidth',1.5);
+yline(m2(end),'-r','Linewidth',1.5);
 ylabel('E[\textbf{w}$^2$]')
 xlabel('\# samples')
 set(gca,'xscale','log')
