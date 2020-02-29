@@ -15,9 +15,9 @@ clc, clear, close all
 % Figure params: 
 
 width = 252; 
-height = 90;
+height = 100;
 plot_markersize = 15;
-plot_fontSize = 8;
+plot_fontSize = 9;
 plot_linewidth = 2;
 
 % Confidence interval params: 
@@ -68,19 +68,16 @@ conf_int3 = sqrt(log(2/alpha)/(2*n3));
 
 %% Compute Moments: 
 
-H = [1000:1E4:5E5];
+H = [1000:1E3:1E6];
 
 for j = 1:length(H)
-    
-    for i  = 1:3
         tt = tic;
         datam = [];
         datam = [unifrnd(0,5,H(j),1); gamrnd(2,5,[H(j),1])]';
-        m(j,i) = diracMixtureCostmean(datam);
+        m(j) = diracMixtureCostmean(datam);
         [sigma,~,~,~] = kde(datam,H(j),min(datam),max(datam));
-        m2(j,i) = diracMixtureCostcov(datam,sigma);
-        ttf(j,i) = toc(tt);
-    end
+        m2(j) = diracMixtureCostcov(datam,sigma);
+        ttf(j) = toc(tt);
 end
 
 stdm = std(m,1,2);
