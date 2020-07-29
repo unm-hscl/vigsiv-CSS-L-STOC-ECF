@@ -1,0 +1,360 @@
+Figure3
+Generating PWAUA for ICC
+Elapsed time is 1.525640 seconds.
+Computing Moments for Cost
+Elapsed time is 0.002339 seconds.
+Solving ECF-STOC
+ 
+Calling Gurobi 7.52: 535 variables, 503 equality constraints
+------------------------------------------------------------
+Gurobi optimizer, licensed to CVX for CVX
+Academic license - for non-commercial use only
+Optimize a model with 503 rows, 535 columns and 3497 nonzeros
+Model has 2 quadratic constraints
+Coefficient statistics:
+  Matrix range     [2e-05, 4e+00]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [1e-02, 1e+01]
+  Bounds range     [0e+00, 0e+00]
+  RHS range        [6e-04, 1e+02]
+Presolve removed 310 rows and 486 columns
+Presolve time: 0.05s
+Presolved: 213 rows, 56 columns, 1526 nonzeros
+Presolved model has 2 second-order cone constraints
+Ordering time: 0.00s
+
+Barrier statistics:
+ Dense cols : 10
+ AA' NZ     : 3.910e+03
+ Factor NZ  : 4.214e+03
+ Factor Ops : 1.260e+05 (less than 1 second per iteration)
+ Threads    : 1
+
+                  Objective                Residual
+Iter       Primal          Dual         Primal    Dual     Compl     Time
+   0   2.93397598e+03 -6.57476093e+00  4.04e+03 9.05e-02  3.60e+01     0s
+   1   1.26343300e+03 -1.21972377e+02  1.73e+03 9.95e-08  2.54e+01     0s
+   2   1.08617283e+03  6.62752442e+01  1.33e+03 2.97e-08  1.94e+01     0s
+   3   1.84591476e+03  1.02429390e+03  8.81e+02 1.30e-08  1.46e+01     0s
+   4   3.42765309e+03  5.09827548e+03  4.40e+02 4.26e-14  9.99e+00     0s
+   5   6.67491527e+03  7.45228603e+03  2.53e+02 7.96e-13  1.72e+01     0s
+   6   1.61542356e+04  2.56118992e+04  1.06e+02 2.14e-11  2.68e+01     0s
+   7   2.32517097e+04  3.03415200e+04  5.02e+01 6.28e-11  1.47e+01     0s
+   8   2.93439353e+04  4.04226884e+04  3.77e+01 2.51e-09  1.33e+01     0s
+   9   3.45000521e+04  5.28773171e+04  2.74e+01 1.24e-09  3.84e+00     0s
+  10   4.38448817e+04  5.76643470e+04  1.93e+01 1.97e-07  1.19e+01     0s
+  11   4.65379081e+04  6.18022374e+04  1.69e+01 4.27e-07  9.28e+00     0s
+  12   5.50205277e+04  6.90148381e+04  1.28e+01 7.39e-07  1.49e+01     0s
+  13   5.90211687e+04  8.46596344e+04  1.06e+01 9.33e-07  6.50e+00     0s
+  14   6.11433664e+04  9.06898853e+04  9.72e+00 4.90e-04  2.65e+01     0s
+  15   7.96054703e+04  8.91366073e+04  6.19e+00 5.70e-04  6.37e+01     0s
+  16   9.01962325e+04  1.02909464e+05  3.79e+00 1.53e-04  5.34e+01     0s
+  17   9.60695241e+04  1.06030004e+05  2.35e+00 7.23e-06  3.86e+01     0s
+  18   9.76446355e+04  1.08894719e+05  2.01e+00 1.70e-05  3.14e+01     0s
+  19   1.00717459e+05  1.09950007e+05  1.58e+00 3.84e-05  2.65e+01     0s
+  20   1.02123413e+05  1.11878717e+05  1.43e+00 7.77e-05  2.46e+01     0s
+  21   1.07749143e+05  1.18610028e+05  1.11e+00 8.81e-05  2.36e+01     0s
+  22   1.10865961e+05  1.20283942e+05  9.15e-01 6.28e-05  2.48e+01     0s
+  23   1.14863961e+05  1.26298246e+05  7.51e-01 4.49e-05  2.51e+01     0s
+  24   1.20159981e+05  1.29084825e+05  5.45e-01 6.16e-05  2.64e+01     0s
+  25   1.23299576e+05  1.30179469e+05  3.94e-01 7.58e-05  2.05e+01     0s
+  26   1.25206704e+05  1.30907601e+05  3.21e-01 8.75e-05  1.79e+01     0s
+  27   1.25787414e+05  1.32357315e+05  3.02e-01 1.24e-04  1.65e+01     0s
+  28   1.29015839e+05  1.32594833e+05  2.11e-01 1.18e-04  1.69e+01     0s
+  29   1.30401505e+05  1.35552980e+05  1.76e-01 1.61e-04  1.19e+01     0s
+  30   1.32607573e+05  1.36874730e+05  1.25e-01 2.67e-04  9.32e+00     0s
+  31   1.33723229e+05  1.37831945e+05  1.01e-01 4.26e-04  7.64e+00     0s
+  32   1.35753748e+05  1.38302666e+05  5.95e-02 5.02e-04  5.92e+00     0s
+  33   1.36110959e+05  1.38981906e+05  5.29e-02 5.78e-04  4.72e+00     0s
+  34   1.36747927e+05  1.38940648e+05  4.22e-02 6.87e-04  4.08e+00     0s
+  35   1.39241920e+05  1.38803031e+05  1.24e-02 5.03e-04  5.58e+00     0s
+  36   1.39309705e+05  1.39490274e+05  7.59e-03 6.24e-04  1.87e+00     0s
+  37   1.39477464e+05  1.39523171e+05  2.23e-03 2.06e-04  6.06e-01     0s
+  38   1.39569786e+05  1.39573161e+05  2.61e-04 1.39e-05  8.43e-02     0s
+  39   1.39584645e+05  1.39580399e+05  4.85e-10 4.22e-06  1.73e-02     0s
+  40   1.39581857e+05  1.39581593e+05  9.76e-10 3.27e-07  1.07e-03     0s
+  41   1.39581826e+05  1.39581799e+05  2.78e-08 2.68e-04  1.09e-04     0s
+  42   1.39581820e+05  1.39581812e+05  8.19e-09 6.09e-05  3.35e-05     0s
+  43   1.39581817e+05  1.39581812e+05  2.06e-08 2.26e-05  2.26e-05     0s
+  44   1.39581815e+05  1.39581812e+05  1.41e-06 2.49e-03  2.25e-05     0s
+  45   1.39581816e+05  1.39581812e+05  5.30e-07 4.83e-04  2.25e-05     0s
+  46   1.39581814e+05  1.39581812e+05  1.70e-06 2.62e-04  2.25e-05     0s
+  47   1.39581811e+05  1.39581812e+05  3.91e-06 8.16e-04  2.24e-05     0s
+  48   1.39581802e+05  1.39581812e+05  8.61e-06 1.70e-03  2.25e-05     1s
+  49   1.39581820e+05  1.39581812e+05  1.96e-06 1.72e-03  2.25e-05     1s
+  50   1.39581812e+05  1.39581812e+05  2.70e-06 1.59e-04  2.24e-05     1s
+  51   1.39581808e+05  1.39581812e+05  4.74e-06 1.92e-05  2.24e-05     1s
+  52   1.39581813e+05  1.39581812e+05  2.36e-06 7.74e-05  2.25e-05     1s
+  53   1.39581818e+05  1.39581812e+05  5.22e-07 2.55e-04  2.26e-05     1s
+
+Barrier performed 53 iterations in 0.55 seconds
+Sub-optimal termination - objective 1.39581857e+05
+
+Warning: to get QCP duals, please set parameter QCPDual to 1
+
+
+
+------------------------------------------------------------
+Status: Inaccurate/Solved
+Optimal value (cvx_optval): +145537
+ 
+Elapsed time is 1.813320 seconds.
+Run : 1
+---------BlackmorePC11-----------
+ 
+No. of particles: 50
+ 
+Calling Gurobi 7.52: 4083 variables, 3022 equality constraints
+------------------------------------------------------------
+Gurobi optimizer, licensed to CVX for CVX
+Academic license - for non-commercial use only
+Optimize a model with 3022 rows, 4083 columns and 7183 nonzeros
+Model has 1001 quadratic constraints
+Variable types: 4033 continuous, 50 integer (50 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 5e+03]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [1e-02, 2e-01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [3e-05, 1e+02]
+Solve qcp for cone disaggregation ...
+Presolve removed 337 rows and 1021 columns
+Presolve time: 0.33s
+Presolved: 2686 rows, 3073 columns, 6189 nonzeros
+Variable types: 3023 continuous, 50 integer (50 binary)
+
+Root relaxation: objective -2.000100e+02, 79 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 4277.01956    0   49          - 4277.01956      -     -    0s
+     0     0 11833.1358    0   49          - 11833.1358      -     -    0s
+     0     0 11968.7274    0   48          - 11968.7274      -     -    0s
+     0     0 23746.1277    0   47          - 23746.1277      -     -    1s
+     0     0 23784.1095    0   47          - 23784.1095      -     -    1s
+     0     0 41495.5502    0   48          - 41495.5502      -     -    1s
+     0     0 41509.8962    0   48          - 41509.8962      -     -    1s
+     0     0 64287.2088    0   47          - 64287.2088      -     -    1s
+     0     0 64301.1572    0   48          - 64301.1572      -     -    1s
+     0     0 86208.8883    0   47          - 86208.8883      -     -    1s
+     0     0 86237.3334    0   47          - 86237.3334      -     -    1s
+     0     0 98596.2105    0   47          - 98596.2105      -     -    1s
+     0     0 98644.5414    0   49          - 98644.5414      -     -    1s
+     0     0 102557.205    0   46          - 102557.205      -     -    1s
+     0     2 102557.205    0   46          - 102557.205      -     -    2s
+    40    30 135078.751    5    -          - 102677.453      -   752    5s
+    79    48 135120.501    5    -          - 102677.453      -   892   10s
+   110    47 135120.503    5    -          - 102677.453      -   952   15s
+*  132    47               5    135120.50287 102680.656  24.0%   846   18s
+*  133    47               5    135120.50285 102680.656  24.0%   840   19s
+   140    41 130641.228    4    - 135120.503 102680.656  24.0%   865   22s
+   150    35 130675.251    4    - 135120.503 102680.656  24.0%   902   26s
+   163    35 130683.209    4    - 135120.503 102680.656  24.0%   954   30s
+   173    40 130684.698    4    - 135120.503 115773.236  14.3%   985   35s
+   198    40 124762.022   10    - 135120.503 116234.546  14.0%  1014   40s
+*  202    37              10    129282.70621 116234.546  10.1%  1006   40s
+*  216    30              11    123405.51337 120631.947  2.25%  1002   44s
+   219    20     cutoff   10      123405.513 120631.947  2.25%  1021   46s
+   236     9     cutoff   11      123405.513 120631.947  2.25%  1018   54s
+   246     2 123034.917   11    - 123405.513 120631.947  2.25%  1091   55s
+*  276     7               9    123405.51335 122715.196  0.56%   994   56s
+*  309     4              11    123391.23599 122715.297  0.55%   909   58s
+*  322     4              11    123051.30730 122715.298  0.27%   878   59s
+*  332     0              11    123035.14220 122715.298  0.26%   855   60s
+*  335     2              10    122912.25147 122715.298  0.16%   848   60s
+*  337     0              11    122715.29825 122715.298  0.00%   844   60s
+
+Cutting planes:
+  MIR: 78
+
+Explored 338 nodes (296466 simplex iterations) in 62.36 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 10: 122715 122912 123035 ... 135121
+
+Optimal solution found (tolerance 1.00e-04)
+Warning: max constraint violation (3.0823e-04) exceeds tolerance
+Best objective 1.227152982512e+05, best bound 1.227152982512e+05, gap 0.0000%
+------------------------------------------------------------
+Status: Solved
+Optimal value (cvx_optval): +122715
+ 
+Total CVX Run Time for 50 particles: 243.2100 seconds
+------------------------------------
+Total CVX Solve Time for 50 particles: 62.5312 seconds
+Run : 2
+---------BlackmorePC11-----------
+ 
+No. of particles: 50
+ 
+Calling Gurobi 7.52: 4083 variables, 3022 equality constraints
+------------------------------------------------------------
+Gurobi optimizer, licensed to CVX for CVX
+Academic license - for non-commercial use only
+Optimize a model with 3022 rows, 4083 columns and 7183 nonzeros
+Model has 1001 quadratic constraints
+Variable types: 4033 continuous, 50 integer (50 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 5e+03]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [1e-02, 2e-01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [3e-05, 1e+02]
+Solve qcp for cone disaggregation ...
+Presolve removed 337 rows and 1021 columns
+Presolve time: 0.33s
+Presolved: 2686 rows, 3073 columns, 6189 nonzeros
+Variable types: 3023 continuous, 50 integer (50 binary)
+
+Root relaxation: objective -2.000100e+02, 79 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 4277.01956    0   49          - 4277.01956      -     -    0s
+     0     0 11833.1358    0   49          - 11833.1358      -     -    0s
+     0     0 11968.7274    0   48          - 11968.7274      -     -    0s
+     0     0 23746.1277    0   47          - 23746.1277      -     -    1s
+     0     0 23784.1095    0   47          - 23784.1095      -     -    1s
+     0     0 41495.5502    0   48          - 41495.5502      -     -    1s
+     0     0 41509.8962    0   48          - 41509.8962      -     -    1s
+     0     0 64287.2088    0   47          - 64287.2088      -     -    1s
+     0     0 64301.1572    0   48          - 64301.1572      -     -    1s
+     0     0 86208.8883    0   47          - 86208.8883      -     -    1s
+     0     0 86237.3334    0   47          - 86237.3334      -     -    1s
+     0     0 98596.2105    0   47          - 98596.2105      -     -    1s
+     0     0 98644.5414    0   49          - 98644.5414      -     -    1s
+     0     0 102557.205    0   46          - 102557.205      -     -    1s
+     0     2 102557.205    0   46          - 102557.205      -     -    2s
+    40    30 135078.751    5    -          - 102677.453      -   752    5s
+    83    47 135120.502    5    -          - 102677.453      -   902   10s
+   116    44 135120.503    5    -          - 102677.453      -   917   15s
+*  132    47               5    135120.50287 102680.656  24.0%   846   18s
+*  133    47               5    135120.50285 102680.656  24.0%   840   18s
+   140    41 130641.228    4    - 135120.503 102680.656  24.0%   865   22s
+   150    35 130675.251    4    - 135120.503 102680.656  24.0%   902   26s
+   163    35 130683.209    4    - 135120.503 102680.656  24.0%   954   30s
+   173    40 130684.698    4    - 135120.503 115773.236  14.3%   985   35s
+   198    40 124762.022   10    - 135120.503 116234.546  14.0%  1014   40s
+*  202    37              10    129282.70621 116234.546  10.1%  1006   40s
+*  216    30              11    123405.51337 120631.947  2.25%  1002   44s
+   219    20     cutoff   10      123405.513 120631.947  2.25%  1021   46s
+   236     9     cutoff   11      123405.513 120631.947  2.25%  1018   54s
+   246     2 123034.917   11    - 123405.513 120631.947  2.25%  1091   55s
+*  276     7               9    123405.51335 122715.196  0.56%   994   56s
+*  309     4              11    123391.23599 122715.297  0.55%   909   58s
+*  322     4              11    123051.30730 122715.298  0.27%   878   59s
+*  332     0              11    123035.14220 122715.298  0.26%   855   60s
+*  335     2              10    122912.25147 122715.298  0.16%   848   60s
+*  337     0              11    122715.29825 122715.298  0.00%   844   60s
+
+Cutting planes:
+  MIR: 78
+
+Explored 338 nodes (296466 simplex iterations) in 62.38 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 10: 122715 122912 123035 ... 135121
+
+Optimal solution found (tolerance 1.00e-04)
+Warning: max constraint violation (3.0823e-04) exceeds tolerance
+Best objective 1.227152982512e+05, best bound 1.227152982512e+05, gap 0.0000%
+------------------------------------------------------------
+Status: Solved
+Optimal value (cvx_optval): +122715
+ 
+Total CVX Run Time for 50 particles: 248.2300 seconds
+------------------------------------
+Total CVX Solve Time for 50 particles: 62.5857 seconds
+Run : 3
+---------BlackmorePC11-----------
+ 
+No. of particles: 50
+ 
+Calling Gurobi 7.52: 4083 variables, 3022 equality constraints
+------------------------------------------------------------
+Gurobi optimizer, licensed to CVX for CVX
+Academic license - for non-commercial use only
+Optimize a model with 3022 rows, 4083 columns and 7183 nonzeros
+Model has 1001 quadratic constraints
+Variable types: 4033 continuous, 50 integer (50 binary)
+Coefficient statistics:
+  Matrix range     [2e-02, 5e+03]
+  QMatrix range    [1e+00, 1e+00]
+  Objective range  [1e-02, 2e-01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [3e-05, 1e+02]
+Solve qcp for cone disaggregation ...
+Presolve removed 337 rows and 1021 columns
+Presolve time: 0.34s
+Presolved: 2686 rows, 3073 columns, 6189 nonzeros
+Variable types: 3023 continuous, 50 integer (50 binary)
+
+Root relaxation: objective -2.000100e+02, 79 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 4277.01956    0   49          - 4277.01956      -     -    0s
+     0     0 11833.1358    0   49          - 11833.1358      -     -    0s
+     0     0 11968.7274    0   48          - 11968.7274      -     -    0s
+     0     0 23746.1277    0   47          - 23746.1277      -     -    1s
+     0     0 23784.1095    0   47          - 23784.1095      -     -    1s
+     0     0 41495.5502    0   48          - 41495.5502      -     -    1s
+     0     0 41509.8962    0   48          - 41509.8962      -     -    1s
+     0     0 64287.2088    0   47          - 64287.2088      -     -    1s
+     0     0 64301.1572    0   48          - 64301.1572      -     -    1s
+     0     0 86208.8883    0   47          - 86208.8883      -     -    1s
+     0     0 86237.3334    0   47          - 86237.3334      -     -    1s
+     0     0 98596.2105    0   47          - 98596.2105      -     -    1s
+     0     0 98644.5414    0   49          - 98644.5414      -     -    1s
+     0     0 102557.205    0   46          - 102557.205      -     -    1s
+     0     2 102557.205    0   46          - 102557.205      -     -    2s
+    40    30 135078.751    5    -          - 102677.453      -   752    5s
+    83    47 135120.502    5    -          - 102677.453      -   902   10s
+   116    44 135120.503    5    -          - 102677.453      -   917   15s
+*  132    47               5    135120.50287 102680.656  24.0%   846   18s
+*  133    47               5    135120.50285 102680.656  24.0%   840   18s
+   140    41 130641.228    4    - 135120.503 102680.656  24.0%   865   21s
+   150    35 130675.251    4    - 135120.503 102680.656  24.0%   902   26s
+   163    35 130683.209    4    - 135120.503 102680.656  24.0%   954   30s
+   173    40 130684.698    4    - 135120.503 115773.236  14.3%   985   35s
+   198    40 124762.022   10    - 135120.503 116234.546  14.0%  1014   40s
+*  202    37              10    129282.70621 116234.546  10.1%  1006   40s
+*  216    30              11    123405.51337 120631.947  2.25%  1002   43s
+   219    20     cutoff   10      123405.513 120631.947  2.25%  1021   46s
+   236     9     cutoff   11      123405.513 120631.947  2.25%  1018   54s
+   246     2 123034.917   11    - 123405.513 120631.947  2.25%  1091   55s
+*  276     7               9    123405.51335 122715.196  0.56%   994   56s
+*  309     4              11    123391.23599 122715.297  0.55%   909   58s
+*  322     4              11    123051.30730 122715.298  0.27%   878   58s
+*  332     0              11    123035.14220 122715.298  0.26%   855   59s
+*  335     2              10    122912.25147 122715.298  0.16%   848   59s
+   336     0     cutoff   11      122912.251 122715.298  0.16%   846   60s
+*  337     0              11    122715.29825 122715.298  0.00%   844   60s
+
+Cutting planes:
+  MIR: 78
+
+Explored 338 nodes (296466 simplex iterations) in 62.04 seconds
+Thread count was 8 (of 8 available processors)
+
+Solution count 10: 122715 122912 123035 ... 135121
+
+Optimal solution found (tolerance 1.00e-04)
+Warning: max constraint violation (3.0823e-04) exceeds tolerance
+Best objective 1.227152982512e+05, best bound 1.227152982512e+05, gap 0.0000%
+------------------------------------------------------------
+Status: Solved
+Optimal value (cvx_optval): +122715
+ 
+Total CVX Run Time for 50 particles: 242.7300 seconds
+------------------------------------
+Total CVX Solve Time for 50 particles: 62.3385 seconds
+Desired P{Hx<=g}: 0.80 | Desired relative abserror in cost: 0.10
+PASSD: ECFSTOC : Monte-Carlo via 1e+05 particles | P{Hx<=g} = 0.937 | RelErr Cost = 0.006
+ERROR: BlackmoreTRO11_A : Monte-Carlo via 1e+05 particles | P{Hx<=g} = 0.739 | RelErr Cost = 0.017
+ERROR: BlackmoreTRO11_B : Monte-Carlo via 1e+05 particles | P{Hx<=g} = 0.738 | RelErr Cost = 0.018
+ERROR: BlackmoreTRO11_C : Monte-Carlo via 1e+05 particles | P{Hx<=g} = 0.743 | RelErr Cost = 0.019
+diary off

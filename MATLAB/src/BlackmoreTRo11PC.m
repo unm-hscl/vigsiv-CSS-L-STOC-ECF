@@ -57,7 +57,7 @@ function [blackmore_time_to_solve,blackmore_total_time,blackmore_opt_input_vecto
         tstart = tic;
         cvx_clear
             cvx_precision BEST
-        cvx_begin quiet
+        cvx_begin 
             variable U_vector(size(Bd,2),1);
             variable xBl(size(Ad,1),N);
             variable mean_X(size(Ad,1),1);
@@ -75,10 +75,9 @@ function [blackmore_time_to_solve,blackmore_total_time,blackmore_opt_input_vecto
 
               for i = 1:N
                   
-                  hbig*xBl(:,i) - gbig <= large_constant*d(i);
-                  
+                  hbig*xBl(:,i) - gbig <= large_constant*d(i);                  
               end
-              1/N*sum(d)<=Delta;
+              1/N*sum(d) >= 1 - Delta;
               
             if isfield(prob,'xterm')
                 mean_X(end-4:end,:) == xterm;
@@ -92,7 +91,7 @@ function [blackmore_time_to_solve,blackmore_total_time,blackmore_opt_input_vecto
         blackmore_total_time = cvx_cputime;
 
         if strcmpi(cvx_status,'Solved')
-            blackmore_opt_mean_X = mean_X;
+            blackmore_opt_mean_X = mean(xBl,2);
             blackmore_opt_val = cvx_optval;
             blackmore_opt_input_vector = U_vector;            
         else
