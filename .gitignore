@@ -33,6 +33,7 @@ Temporary Items
 ### MATLAB ###
 # Windows default autosave extension
 *.asv
+*.m~
 
 # OSX / *nix default autosave extension
 *.m~
